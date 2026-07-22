@@ -25,13 +25,36 @@ async def on_ready():
 
 @m3mmo.event
 async def on_message(message):
-    print(message.content)
-    print(f"Message author: {1}", message.author)
-    print(f"m3mmo user: {1}", m3mmo.user)
+    channel = message.channel.name
+    print(f"Message channel: {message.channel.name}")
+    print(f"Message author: {message.author}")
+    print(f"m3mmo user: {m3mmo.user}")
+
+    
+    
     if(message.author != m3mmo.user):
         await message.channel.send(message.content)
+        match channel:
+            case "sandbox":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case "appointments":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case "groceries":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case "reminders":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case "recipes":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case "misc":
+                await message.channel.send(f"We are in the {channel} channel.")
+            case _:
+                await message.channel.send("No valid channel found.")
+
+        
+        
     else:
         pass
+
 
 if __name__ == "__main__":
     # call bot.run in the actual main function here
