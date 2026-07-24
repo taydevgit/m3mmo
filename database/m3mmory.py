@@ -1,21 +1,82 @@
 import sqlite3
 
 def init_db():
-    # create a database
     conn = sqlite3.connect("m3mmory.db")
-
-    # make a cursor object to inject SQL
     cur = conn.cursor()
 
-    # create and define the tables if they do not exist
-    cur.execute("CREATE TABLE IF NOT EXISTS reminders(id INTEGER PRIMARY KEY, title TEXT, date TEXT, time TEXT, location TEXT, complete INTEGER)")
-    cur.execute("CREATE TABLE IF NOT EXISTS groceries(id INTEGER PRIMARY KEY, item TEXT, date_bought TEXT, expires TEXT, price TEXT, notified INTEGER)")
-    cur.execute("CREATE TABLE IF NOT EXISTS recipes(id INTEGER PRIMARY KEY, name TEXT, ingredients TEXT, link TEXT, notes TEXT)")
-    cur.execute("CREATE TABLE IF NOT EXISTS misc(id INTEGER PRIMARY KEY, content TEXT, created TEXT)")
+    cur.execute("""CREATE TABLE IF NOT EXISTS reminders(
+        id INTEGER PRIMARY KEY,
+        type TEXT,
+        title TEXT,
+        date TEXT,
+        time TEXT,
+        location TEXT,
+        complete INTEGER)""")
 
-    # return the value of the connection and the cursor object whenever this is called
+    cur.execute("""CREATE TABLE IF NOT EXISTS grocery_lists(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        store TEXT,
+        created TEXT)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS grocery_items(
+        id INTEGER PRIMARY KEY,
+        list_id INTEGER,
+        item TEXT,
+        quantity TEXT,
+        category TEXT,
+        checked INTEGER)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS recipes(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        ingredients TEXT,
+        link TEXT,
+        notes TEXT)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS links(
+        id INTEGER PRIMARY KEY,
+        label TEXT,
+        url TEXT,
+        category TEXT,
+        note TEXT)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS bills(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        amount TEXT,
+        due_date TEXT,
+        paid INTEGER,
+        recurring INTEGER)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS subscriptions(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        amount TEXT,
+        renewal_date TEXT,
+        category TEXT,
+        active INTEGER)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS wishlist(
+        id INTEGER PRIMARY KEY,
+        title TEXT,
+        url TEXT,
+        priority TEXT,
+        added_by TEXT)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS maintenance(
+        id INTEGER PRIMARY KEY,
+        item TEXT,
+        last_done TEXT,
+        next_due TEXT,
+        notes TEXT)""")
+
+    cur.execute("""CREATE TABLE IF NOT EXISTS workout_plans(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        exercises TEXT,
+        schedule TEXT,
+        notes TEXT)""")
+
+    conn.commit()
     return conn, cur
-
-
-# close when we are done with the bot? maybe this needs to be called from bot.py or something
-# conn.close()
