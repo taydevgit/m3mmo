@@ -8,6 +8,7 @@ def init_db():
         id INTEGER PRIMARY KEY,
         type TEXT,
         title TEXT,
+        name TEXT,
         date TEXT,
         time TEXT,
         location TEXT,
@@ -44,7 +45,7 @@ def init_db():
     cur.execute("""CREATE TABLE IF NOT EXISTS bills(
         id INTEGER PRIMARY KEY,
         name TEXT,
-        amount TEXT,
+        amount REAL,
         due_date TEXT,
         paid INTEGER,
         recurring INTEGER)""")
@@ -52,7 +53,7 @@ def init_db():
     cur.execute("""CREATE TABLE IF NOT EXISTS subscriptions(
         id INTEGER PRIMARY KEY,
         name TEXT,
-        amount TEXT,
+        amount REAL,
         renewal_date TEXT,
         category TEXT,
         active INTEGER)""")

@@ -3,10 +3,14 @@ import asyncio
 from dotenv import load_dotenv
 import os
 from database.m3mmory import init_db
+from wr4ngler import parse_reminder
+from handlers.reminders import handle_reminder
+
 
 
 # declaring variables so they exist to initialize db in on_ready function for bot
-global conn, cur
+conn = None
+curr = None
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
@@ -25,6 +29,7 @@ m3mmo = discord.Client(intents=intents)
 # usually after login is complete (when is a bot logged in?)
 @m3mmo.event
 async def on_ready():
+    global conn, cur
     conn, cur = init_db()
     print('Database initialized, bot online.')
 
@@ -52,11 +57,13 @@ async def on_message(message):
             case "maintenance":
                 await message.channel.send(f"Maintenance channel.")
             case "appointments":
-                await message.channel.send(f"Appointments channel.")
+                response = handle_reminder(conn, cur, message.content)
+                await message.channel.send(response)
             case "announcements":
                 await message.channel.send(f"Announcements channel.")
             case "to-do":
-                await message.channel.send(f"To-do channel.")
+                response = handle_reminder(conn, cur, message.content)
+                await message.channel.send(response)
             case "monthly-bills":
                 await message.channel.send(f"Monthly bills channel.")
             case "subscriptions":
